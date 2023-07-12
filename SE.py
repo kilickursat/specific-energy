@@ -16,8 +16,8 @@ import plotly.express as px
 
 model=load_model("specific-energy")
 
-def predict(model, df2):
-    predictions_df = predict_model(estimator=model, data=df2)
+def predict(model, input_df):
+    predictions_df = predict_model(estimator=model, data=input_df)
     predictions = predictions_df['SE (MJ/m^3)'][0]
     return predictions
 
@@ -88,7 +88,7 @@ def run():
                 data = pd.read_csv(file_upload)
             
             data = data.dropna()
-            predictions = predict_model(estimator=model,data=data)
+            predictions = predict_model(estimator=model,data=input_df)
             st.write(predictions)
           
 
