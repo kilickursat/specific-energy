@@ -66,7 +66,7 @@ def run():
       input_dict = {'pressure_gauge1' : pressure_gauge1, 'pressure_gauge2' : pressure_gauge2, 'pressure_gauge3' : pressure_gauge3, 'pressure_gauge4' : pressure_gauge4,
         'digging_velocity_left' : digging_velocity_left, 
       'digging_velocity_right' : digging_velocity_right,'shield_jack_stroke_left' : shield_jack_stroke_left,
-        'shield_jack_stroke_right' : shield_jack_stroke_righ,
+        'shield_jack_stroke_right' : shield_jack_stroke_right,
       'propulsion_pressure' : propulsion_pressure,'total_thrust' : total_thrust,'cutter_torque' : cutter_torque,'cutterhead_rotation_speed' : cutterhead_rotation_speed,
       'screw_pressure' : screw_pressure,'screw_rotation_speed' :screw_rotation_speed,'gate_opening' :gate_opening,'mud_injection_pressure' :mud_injection_pressure,'add_mud_flow' : add_mud_flow,
       'back_in_injection_rate':back_in_injection_rate}
