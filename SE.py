@@ -62,15 +62,15 @@ def run():
         
       output = ""
 
-
-      input_dict = {'pressure_gauge1' : Pressure gauge 1 (kPa), 'pressure_gauge2' : Pressure gauge 2 (kPa), 'pressure_gauge3' : Pressure gauge 3 (kPa), 'pressure_gauge4' : Pressure gauge 4 (kPa),
+"""
+      input_dict = {'pressure_gauge1' : pressure_gauge1, 'pressure_gauge2' : Pressure gauge 2 (kPa), 'pressure_gauge3' : Pressure gauge 3 (kPa), 'pressure_gauge4' : Pressure gauge 4 (kPa),
         'digging_velocity_left' : Digging velocity left (mm/min), 
       'digging_velocity_right' : Digging velocity right (mm/min),'shield_jack_stroke_left' : Shield jack stroke left (mm),
         'shield_jack_stroke_right' : Shield jack stroke right (mm),
       'propulsion_pressure' : Propulsion pressure (MPa),'total_thrust' : Total thrust (kN),'cutter_torque' : Cutter torque (kNm),'cutterhead_rotation_speed' : Cutterhead rotation speed (rpm),
       'screw_pressure' : Screw pressure (MPa),'screw_rotation_speed' : Screw rotation speed (rpm),'gate_opening' : Gate opening (%),'mud_injection_pressure' : Mud injection pressure (MPa),'add_mud_flow' : Add mud flow (L/min),
       'back_in_injection_rate':Back in injection rate (%)}
-      
+"""      
       input_df = pd.DataFrame([input_dict])
 
       if st.button("Predict"):
