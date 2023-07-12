@@ -62,15 +62,15 @@ def run():
         
       output = ""
 
-"""
-      input_dict = {'pressure_gauge1' : pressure_gauge1, 'pressure_gauge2' : Pressure gauge 2 (kPa), 'pressure_gauge3' : Pressure gauge 3 (kPa), 'pressure_gauge4' : Pressure gauge 4 (kPa),
-        'digging_velocity_left' : Digging velocity left (mm/min), 
-      'digging_velocity_right' : Digging velocity right (mm/min),'shield_jack_stroke_left' : Shield jack stroke left (mm),
-        'shield_jack_stroke_right' : Shield jack stroke right (mm),
-      'propulsion_pressure' : Propulsion pressure (MPa),'total_thrust' : Total thrust (kN),'cutter_torque' : Cutter torque (kNm),'cutterhead_rotation_speed' : Cutterhead rotation speed (rpm),
-      'screw_pressure' : Screw pressure (MPa),'screw_rotation_speed' : Screw rotation speed (rpm),'gate_opening' : Gate opening (%),'mud_injection_pressure' : Mud injection pressure (MPa),'add_mud_flow' : Add mud flow (L/min),
-      'back_in_injection_rate':Back in injection rate (%)}
-"""      
+
+      input_dict = {'pressure_gauge1' : pressure_gauge1, 'pressure_gauge2' : pressure_gauge2, 'pressure_gauge3' : pressure_gauge3, 'pressure_gauge4' : pressure_gauge4,
+        'digging_velocity_left' : digging_velocity_left, 
+      'digging_velocity_right' : digging_velocity_right,'shield_jack_stroke_left' : shield_jack_stroke_left,
+        'shield_jack_stroke_right' : shield_jack_stroke_righ,
+      'propulsion_pressure' : propulsion_pressure,'total_thrust' : total_thrust,'cutter_torque' : cutter_torque),'cutterhead_rotation_speed' : cutterhead_rotation_speed,
+      'screw_pressure' : screw_pressure,'screw_rotation_speed' :screw_rotation_speed,'gate_opening' :gate_opening,'mud_injection_pressure' :mud_injection_pressure,'add_mud_flow' : add_mud_flow,
+      'back_in_injection_rate':back_in_injection_rate}
+     
       input_df = pd.DataFrame([input_dict])
 
       if st.button("Predict"):
