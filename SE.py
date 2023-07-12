@@ -1,6 +1,6 @@
 import io
 import matplotlib.pyplot as plt
-import seaborn as sns
+#import seaborn as sns
 from pycaret.regression import *
 import matplotlib as mpl
 mpl.rcParams['figure.dpi'] = 600
