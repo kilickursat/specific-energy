@@ -19,7 +19,7 @@ model=load_model("specific-energy")
 
 def predict(model, input_df):
     predictions_df = predict_model(estimator=model, data=input_df)
-    predictions = predictions_df['SE (MJ/m^3)'][0]
+    predictions = predictions_df['Label)'][0]
     return predictions
 
 def run():
