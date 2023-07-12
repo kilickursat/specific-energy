@@ -1,4 +1,10 @@
 import io
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pycaret.regression import *
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 600
+
 df = pd.read_excel(io.BytesIO(uploaded['data_wearing.xlsx']))
 
 (df.columns.tolist())
@@ -19,8 +25,7 @@ df2.describe()
 
 
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 600
+
 
 """#Before setting up PyCaret, a random sample of 10% size of the dataset will be get to make predictions with unseen data."""
 
@@ -40,11 +45,7 @@ print(f"There are {data_unseen.shape[0]} samples for Unseen Data.")
 print('Data for Modeling: ' + str(df2.shape))
 print('Unseen Data For Predictions: ' + str(data_unseen.shape))
 
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-
-from pycaret.regression import *
 
 clovrs = ClusterOverSampler(oversampler=SMOTE(random_state=1), clusterer=KMeans(random_state=2), distributor=DensityDistributor(), random_state=3)
 
