@@ -71,11 +71,11 @@ def run():
       
       input_df = pd.DataFrame([input_dict])
 
-    if st.button("Predict"):
+      if st.button("Predict"):
             output = predict(model=model, input_df=df2)
             output = '$' + str(output)
 
-        st.success('The output is {}'.format(output))
+      st.success('The output is {}'.format(output))
 
     if add_selectbox == 'Batch':
 
