@@ -72,12 +72,7 @@ def run():
       'back_in_injection_rate':back_in_injection_rate}
      
       input_df = pd.DataFrame([input_dict])
-    # Check X_columns and data column names
-print(X_columns)
-print(data.columns)
 
-# Verify the DataFrame structure
-print(data.head())
 
 
       if st.button("Predict"):
