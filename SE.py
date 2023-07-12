@@ -4,76 +4,93 @@ import seaborn as sns
 from pycaret.regression import *
 import matplotlib as mpl
 mpl.rcParams['figure.dpi'] = 600
+from pycaret.regression import load_model, predict_model,setup
+import streamlit as st
+import pandas as pd
+import numpy as np
+import shap
+import io
+import joblib
+import matplotlib.pyplot as plt
+import plotly.express as px
 
-df = pd.read_excel(io.BytesIO(uploaded['data_wearing.xlsx']))
+model=load_model("specific-energy)
 
-(df.columns.tolist())
+def predict(model, df2):
+    predictions_df = predict_model(estimator=model, data=df2)
+    predictions = predictions_df['SE (MJ/m^3)'][0]
+    return predictions
 
-df.isnull().sum()
+def run():
 
-df2 = df.fillna(0)
+    #from PIL import Image
+    #image = Image.open('logo.png')
+    #image_hospital = Image.open('hospital.jpg')
 
-df2.isnull().sum()
+    #st.image(image,use_column_width=False)
 
-df2 = df2.drop(['RING NU','Altitude','ExcavationD','pitching','rolling','Middle break left and right fold angle (%)','Middle break upper and lower folds (%)',' Geosanth exploration equipment exploration pressure (kN)',
-              'Geoyama Exploration Equipment Exploration Stroke (mm)','Clay shock injection pressure (MPa)','Clay shock flow rateA (L/min)','Clay shock flow rateB (L/min)',
-              'Back injection pressure (MPa)','Ef (m3/mm)', ' Rotation angle (degree)','Bubble injection pressure (MPa)','Back in flow rate of A liquid (L/min)','Back in flow rate of B liquid (L/min)','Excavated Tunnel Length (m)',],axis=1)
+    add_selectbox = st.sidebar.selectbox(
+    "How would you like to predict?",
+    ("Online", "Batch"))
 
-df2.head()
+    st.sidebar.info('This app is created to classify a soft ground tunnel lithology')
+    #st.sidebar.success('https://www.pycaret.org')
+    
+    #st.sidebar.image(image_hospital)
 
-df2.describe()
+    #st.title("Insurance Charges Prediction App")
+
+    if add_selectbox == 'Online':
+      pressure_gauge1 = st.number_input('Pressure gauge 1 (kPa)', min_value=0, value=0)
+      pressure_gauge2 = st.number_input('Pressure gauge 2 (kPa)', min_value=0, value=0)
+      pressure_gauge3 = st.number_input('Pressure gauge 3 (kPa)', min_value=0, value=0)
+      pressure_gauge4 = st.number_input('Pressure gauge 4 (kPa)', min_value=0, value=0)
+      digging_velocity_left = st.number_input('Digging velocity left (mm/min)', min_value=0, value=0)
+      digging_velocity_right = st.number_input('Digging velocity right (mm/min)', min_value=0, value=0)
+      shield_jack_stroke_left = st.number_input('Shield jack stroke left (mm)', min_value=0, value=0)
+      shield_jack_stroke_right = st.number_input('Shield jack stroke right (mm)', min_value=0, value=0)
+      propulsion_pressure = st.number_input('Propulsion pressure (MPa)', min_value=0, value=0)
+      total_thrust = st.number_input('Total thrust (kN)', min_value=0, value=0)
+      cutter_torque = st.number_input('Cutter torque (kNm)', min_value=0, value=0)
+      cutterhead_rotation_speed = st.number_input('Cutterhead rotation speed (rpm)', min_value=0, value=0)
+      screw_pressure = st.number_input('Screw pressure (MPa)', min_value=0, value=0)
+      screw_rotation_speed = st.number_input('Screw rotation speed (rpm)', min_value=0, value=0)
+      gate_opening = st.number_input('Gate opening (%)', min_value=0, max_value=100, value=0)
+      mud_injection_pressure = st.number_input('Mud injection pressure (MPa)', min_value=0, value=0)
+      add_mud_flow = st.number_input('Add mud flow (L/min)', min_value=0, value=0)
+      back_in_injection_rate = st.number_input('Back in injection rate (%)', min_value=0, max_value=100, value=0)
+        
+      output = ""
 
 
+      input_dict = {'pressure_gauge1' : pressure_gauge1, 'pressure_gauge2' : pressure_gauge2, 'pressure_gauge3' : pressure_gauge3, 'pressure_gauge4' : pressure_gauge4, 'digging_velocity_left' : digging_velocity_left, 
+      'digging_velocity_right' : digging_velocity_right,'shield_jack_stroke_left' : shield_jack_stroke_left,'shield_jack_stroke_right' : shield_jack_stroke_right,
+      'propulsion_pressure' : propulsion_pressure,'total_thrust' : total_thrust,'cutter_torque' : cutter_torque,'cutterhead_rotation_speed' : cutterhead_rotation_speed,
+      'screw_pressure' : screw_pressure,'screw_rotation_speed' : screw_rotation_speed,'gate_opening' : gate_opening,'mud_injection_pressure' : mud_injection_pressure,'add_mud_flow' : add_mud_flow,
+      'back_in_injection_rate':back_in_injection_rate}
+      
+      input_df = pd.DataFrame([input_dict])
 
+        if st.button("Predict"):
+            output = predict(model=model, input_df=df2)
+            output = '$' + str(output)
 
+        st.success('The output is {}'.format(output))
 
-"""#Before setting up PyCaret, a random sample of 10% size of the dataset will be get to make predictions with unseen data."""
+    if add_selectbox == 'Batch':
 
-RANDOM_SEED = 142
+        file_upload = st.file_uploader("Upload csv file for predictions", type=["csv","xlsx"])
 
-def data_sampling(dataset, frac: float, random_seed: int):
-    data_sampled_a = dataset.sample(frac=frac, random_state=random_seed)
-    data_sampled_b =  dataset.drop(data_sampled_a.index).reset_index(drop=True)
-    data_sampled_a.reset_index(drop=True, inplace=True)
-    return data_sampled_a, data_sampled_b
+        if file_upload is not None:
+            if file_upload.type == 'application/vnd.ms-excel':  # Check if the uploaded file is in Excel format
+                data = pd.read_excel(file_upload)
+            else:
+                data = pd.read_csv(file_upload)
+            
+            data = data.dropna()
+            predictions = predict_model(estimator=model,data=data)
+            st.write(predictions)
+          
 
-df2, data_unseen = data_sampling(df2, 0.9, RANDOM_SEED)
-print(f"There are {data_unseen.shape[0]} samples for Unseen Data.")
-
-"""#In order to demonstrate the use of the predict_model function on unseen data, a sample of 73 records (~10%) has been withheld from the original dataset to be used for predictions at the end. This should not be confused with a train-test-split."""
-
-print('Data for Modeling: ' + str(df2.shape))
-print('Unseen Data For Predictions: ' + str(data_unseen.shape))
-
-
-
-clovrs = ClusterOverSampler(oversampler=SMOTE(random_state=1), clusterer=KMeans(random_state=2), distributor=DensityDistributor(), random_state=3)
-
-Session_2 = setup(df2, target = 'SE (MJ/m^3)', session_id=177, log_experiment=False,
-                  experiment_name='specific-energy', normalize=True, normalize_method='minmax',
-                  transformation=True, transformation_method = 'quantile', remove_multicollinearity=True, multicollinearity_threshold=0.6)
-
-get_config("X_train")
-
-best_model1 = compare_models()
-
-"""#ExtraTree Regressor"""
-
-et= create_model('et', fold=10)
-
-et= tune_model(et,fold=10, optimize="R2")
-
-evaluate_model(et)
-
-interpret_model(et)
-
-unseen_data=predict_model(et, data=data_unseen)
-unseen_data.head(10)
-
-# finalize the model**
-final_best = finalize_model(et)
-
-# save model to disk
-save_model(final_best, model_name='specific-energy')
-
-model=load_model("specific-energy")
+if __name__ == '__main__':
+    run()
