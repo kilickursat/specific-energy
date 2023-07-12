@@ -14,7 +14,7 @@ import joblib
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-model=load_model("specific-energy)
+model=load_model("specific-energy")
 
 def predict(model, df2):
     predictions_df = predict_model(estimator=model, data=df2)
